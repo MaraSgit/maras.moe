@@ -1,0 +1,158 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const birthDate = new Date(import.meta.env.SECRET_BIRTH_DATE).getTime();
+const currentDate = new Date().getTime();
+const age = Math.floor(
+  (currentDate - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
+);
+
+const userID = "397137454215200789";
+const botToken = import.meta.env.SECRET_BOT_TOKEN;
+
+const response = await fetch(`https://discord.com/api/v9/users/${userID}`, {
+  headers: {
+    Authorization: `Bot ${botToken}`,
+  },
+});
+
+const data = await response.json();
+
+const status = await Astro.glob(`../content/status.md`);
+const statusRaw = status[0].rawContent();
+
+const statusVisible = statusRaw === "" ? "none" : "block";
+---
+
+<Layout title="home">
+  <main>
+    <div class="header">
+      <img
+        src=`https://cdn.discordapp.com/avatars/${userID}/${data.avatar}.png?size=4096`
+      />
+      <div class="header-right">
+        <h1>hi there, i'm <span class="text-gradient">marasorg</span></h1>
+        <span class="status" style=`display: ${statusVisible}`>
+          Status: <span class="status-content">{statusRaw}</span></span
+        >
+      </div>
+    </div>
+    <span class="light-text">{age}</span> year old software developer, tech obsessed
+    person and supermoto enjoyer from Slovakia 🇸🇰
+
+    <h2>projects i participated in</h2>
+    <ul>
+      <li>
+        <a href="https://birblit.club" target="_blank">Birb Literature Club</a> -
+        macro made for bee swarm simulator, i did website, admin panel and discord
+        bot
+      </li>
+    </ul>
+
+    <h2>my personal projects</h2>
+    <ul>
+      <li>
+        <a href="https://discord.gg/JMd7smNfws" target="_blank">Ditty</a> - a simple
+        yet advanced discord music bot that is basically free! (WIP)
+      </li>
+      <li>More to come...</li>
+    </ul>
+
+    <h2>you can find me here</h2>
+    <ul>
+      <li>
+        <a href="https://github.com/MaraSgit" target="_blank">Github</a> - most of
+        my projects are private but that's going to change
+      </li>
+      <li>
+        <a href="https://discord.com/users/397137454215200789" target="_blank"
+          >Discord</a
+        > - i spend most of my online time here, besides coding
+      </li>
+      <li>
+        <a href="https://steamcommunity.com/id/MaraSorg/" target="_blank"
+          >Steam</a
+        > - sometimes i play games. stardew valley is ✨
+      </li>
+      <li>
+        <a href="https://namemc.com/profile/MaraSorg" target="_blank">NameMC</a>
+        - basically my childhood and my first coding experience
+      </li>
+      <li>
+        <a href="mailto:marasorg@proton.me" target="_blank">Email</a> - suprisingly,
+        i look there quite often!
+      </li>
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: 2rem 0;
+    width: 65%;
+  }
+
+  h1 {
+    height: fit-content;
+    margin: 0;
+  }
+
+  .light-text {
+    color: rgb(var(--accent-light));
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: -1rem;
+    margin-left: calc(-100px + -1rem);
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .status {
+    padding: 0.2rem 0.4rem;
+    background-color: rgba(var(--accent-light), 0.15);
+    width: fit-content;
+    height: fit-content;
+    border-radius: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 25vw;
+  }
+
+  .status-content {
+    color: rgb(var(--accent));
+  }
+
+  img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+
+  ul {
+    list-style: circle;
+    padding: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    main {
+      width: 85%;
+    }
+
+    .header {
+      margin: 0;
+      margin-bottom: 0.5rem;
+      gap: 1rem;
+      flex-direction: column;
+    }
+  }
+</style>
