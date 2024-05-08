@@ -125,7 +125,6 @@ const statusVisible = statusRaw === "" ? "none" : "block";
     border-radius: 0.5rem;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 25vw;
   }
 
   .status-content {
@@ -150,9 +149,22 @@ const statusVisible = statusRaw === "" ? "none" : "block";
 
     .header {
       margin: 0;
-      margin-bottom: 0.5rem;
       gap: 1rem;
       flex-direction: column;
+    }
+
+    .status {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  @media screen and (max-width: 1100px) {
+    .header {
+      margin-bottom: 0;
+    }
+    .header-right {
+      flex-direction: column;
+      gap: 0.5rem;
     }
   }
 </style>
