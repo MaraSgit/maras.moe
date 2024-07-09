@@ -4,15 +4,29 @@ interface Props {
 }
 
 const { title } = Astro.props;
-
-const currentYear = new Date().getFullYear();
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    <meta name="description" content="Mara's personal website `(*>﹏<*)′" />
+
+    <link rel="canonical" href="https://maras.moe" />
+    <meta name="theme-color" content="#8080b7" />
+
+    <meta property="og:title" content="maras.moe" />
+    <meta
+      property="og:description"
+      content="Mara's personal website `(*>﹏<*)′"
+    />
+    <meta
+      property="og:image"
+      content="https://cdn.discordapp.com/attachments/1208531571213213696/1260338040401039390/maras.moe.jpg"
+    />
+    <meta property="og:url" content="https://maras.moe" />
+    <meta property="og:type" content="website" />
+
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.jpg" />
     <meta name="generator" content={Astro.generator} />
