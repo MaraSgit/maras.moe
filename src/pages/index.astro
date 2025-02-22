@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { Image } from 'astro:assets';
 
 const birthDate = new Date(import.meta.env.SECRET_BIRTH_DATE).getTime();
 const currentDate = new Date().getTime();
@@ -18,7 +19,8 @@ const response = await fetch(`https://discord.com/api/v9/users/${userID}`, {
 
 const data = await response.json();
 
-const status = await Astro.glob(`../content/status.md`);
+const status = Object.values(import.meta.glob('../content/status.md', { eager: true }));
+//@ts-expect-error
 const statusRaw = status[0].rawContent();
 
 const statusVisible = statusRaw === "" ? "none" : "block";
@@ -27,8 +29,11 @@ const statusVisible = statusRaw === "" ? "none" : "block";
 <Layout title="home">
   <main>
     <div class="header">
-      <img
-        src=`https://cdn.discordapp.com/avatars/${userID}/${data.avatar}.png?size=4096`
+      <Image
+        src=`https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=4096`
+        alt="profile"
+        width={4096}
+        height={4096}
       />
       <div class="header-right">
         <h1>hi there, i'm <span class="text-gradient">marasorg</span></h1>
@@ -38,25 +43,24 @@ const statusVisible = statusRaw === "" ? "none" : "block";
       </div>
     </div>
     <span class="light-text">{age}</span> year old software developer, tech obsessed
-    person and supermoto enjoyer from Slovakia 🇸🇰
+    person and moto/car guy from Slovakia 🇸🇰
+
+    <h2>my personal projects</h2>
+    <ul>
+      <li>
+        <a href="https://discord.gg/JMd7smNfws" target="_blank">Ditty</a> - a simple
+        yet advanced discord music bot that is basically free! <span  class="scrolling-gradient-text">Now out!</span>
+      </li>
+    </ul>
 
     <h2>projects i participated in</h2>
     <ul>
       <li>
         <a href="https://birblitclub.vercel.app/" target="_blank"
           >Birb Literature Club</a
-        > - macro made for bee swarm simulator, i did website, admin panel and discord
+        > - here i made the website, admin panel and discord
         bot (paused for now)
       </li>
-    </ul>
-
-    <h2>my personal projects</h2>
-    <ul>
-      <li>
-        <a href="https://discord.gg/JMd7smNfws" target="_blank">Ditty</a> - a simple
-        yet advanced discord music bot that is basically free! (WIP)
-      </li>
-      <li>More to come...</li>
     </ul>
 
     <h2>you can find me here</h2>
@@ -76,16 +80,16 @@ const statusVisible = statusRaw === "" ? "none" : "block";
         > - sometimes i play games. stardew valley is ✨
       </li>
       <li>
-        <a href="https://namemc.com/profile/MaraSorg" target="_blank">NameMC</a>
-        - basically my childhood and my first coding experience
-      </li>
-      <li>
         <a href="mailto:marasorg@proton.me" target="_blank">Email</a> - suprisingly,
         i look there quite often!
       </li>
     </ul>
   </main>
 </Layout>
+
+<script define:vars={{ data }}>
+  console.log("Data from discord (✿◡‿◡)", data);
+</script>
 
 <style>
   main {
@@ -102,13 +106,32 @@ const statusVisible = statusRaw === "" ? "none" : "block";
     color: rgb(var(--accent-light));
   }
 
+  .scrolling-gradient-text {
+    font-weight: 800;
+    background: linear-gradient(90deg, #ff7e5f, #feb47b, #ff7e5f);
+    background-size: 200% 100%;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: scrolling-background 3s linear infinite;
+  }
+
+  @keyframes scrolling-background {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
   .header {
     display: flex;
     align-items: center;
     flex-direction: row;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: -1rem;
-    margin-left: calc(-100px + -1rem);
+    margin-left: calc(-100px + -1.5rem);
   }
 
   .header-right {
@@ -133,13 +156,13 @@ const statusVisible = statusRaw === "" ? "none" : "block";
   }
 
   img {
-    border-radius: 50%;
+    border-radius: 35%;
     width: 100px;
     height: 100px;
   }
 
   ul {
-    list-style: circle;
+    list-style: inside;
     padding: 0;
   }
 
